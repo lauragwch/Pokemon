@@ -1,15 +1,19 @@
 import PokemonService from "../Services/PokemonService";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 
 
 const PokemonDetails = () => {
-    const [pokemons, setPokemons] = useState([])
-    const fetchPokemonByName = async () => {
+    const { name } = useParams()
+    const [pokemon, setPokemon] = useState({})
+    const fetchPokemonByName = async (name) => {
         try {
-            const response = await PokemonService.fetchPokemonByName()
-            console.log(response.data.results)
-            setPokemons(response.data.results)
+            const response = await PokemonService.fetchPokemonByName(name)
+            const responseBis = await PokemonService.fetchPokemonSpeciesByName(name)
+            setPokemon({...response.data, ...responseBis.data})
+
+            setPokemon(response.data)
 
         } catch (error) {
             console.error(error)
@@ -17,23 +21,21 @@ const PokemonDetails = () => {
         }
     }
     useEffect(() => {
-        fetchPokemonByName()
-    }, [])
-}
+        fetchPokemonByName(name)
+    }, [name])
 
-return <>
-   
-   <Container className="d-flex flex-column align-items-center">
-            <h1 style={{fontSize: '4rem' }}>Details</h1>
+
+    return <>
+
+        <Container className="d-flex flex-column align-items-center">
+            <h1>{name}</h1>
             <div className="d-flex justify-content-around gap-2 flex-wrap">
-                {pokemon((pokemon, index) => {
-                    return  <p>key={index} name={pokemon.name}</p>
-                })}
+                
             </div>
         </Container>
-        
-    
-    </>
-    
 
+
+    </>
+
+}
 export default PokemonDetails

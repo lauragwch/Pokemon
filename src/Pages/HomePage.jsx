@@ -10,7 +10,6 @@ const HomePage = () => {
     const fetchPokemon = async () => {
         try {
             const response = await PokemonService.fetchPokemons()
-            console.log(response.data.results)
             setPokemons(response.data.results)
 
         } catch (error) {

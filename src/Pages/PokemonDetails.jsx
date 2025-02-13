@@ -3,11 +3,33 @@ import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import TypeService from "../Services/TypeService";
+import CanvasJSReact from '@canvasjs/react-charts';
+
 
 
 const PokemonDetails = () => {
     const { name } = useParams()
     const [pokemon, setPokemon] = useState({})
+    const [stats, setStats] = useState([])
+
+    const CanvasJS = CanvasJSReact.CanvasJS;
+    const CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
+    const options = {
+        animationEnabled: true,
+        exportEnabled: true,
+        theme: "dark2", // "light1", "dark1", "dark2"
+        title: {
+            text: "STATS"
+        },
+        data: [{
+            type: "pie",
+            indexLabel: "{label}: {y}",
+            startAngle: -90,
+            dataPoints: stats
+        }]
+    }
+
     const fetchPokemonByName = async (name) => {
         try {
             const response = await PokemonService.fetchPokemonByName(name)
@@ -15,6 +37,12 @@ const PokemonDetails = () => {
             const responseTer = await TypeService.fetchTypesByName(response.data.types[0].type.name)
             console.log({ ...response.data, ...responseBis.data })
             setPokemon({ ...responseTer.data, ...response.data, ...responseBis.data })
+
+            const statTab = []
+            response.data.stats.map((stat) => {
+                statTab.push({y: stat.base_stat, label: stat.stat.name})
+            })
+            setStats(statTab)
 
         } catch (error) {
             console.error(error)
@@ -37,7 +65,7 @@ const PokemonDetails = () => {
             <div className="d-flex col-12 gap-2">
 
                 {/*Je cree une div qui va contenir l'image et les stats*/}
-                <div id='gauche' className="col-5 d-flex flex-column align-items-center">
+                <div id='gauche' className="col-5 d-flex flex-column align-items-center justify-content-between">
 
                     {/*Afficher l'image du pokemon*/}
                     <div id='img'>
@@ -45,7 +73,10 @@ const PokemonDetails = () => {
                     </div>
 
                     {/*Afficher les stats du pokemon*/}
-                    <div>STATS</div>
+                    <div className="col-12"> <CanvasJSChart options={options}
+                    /* onRef={ref => this.chart = ref} */ />
+                    </div>
+
                 </div>
 
 

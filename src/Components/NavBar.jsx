@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import TypeService from "../Services/TypeService";
 import GenerationService from "../Services/GenerationService";
 import VersionService from "../Services/VersionService";
+import HabitatService from "../Services/HabitatService";
 
 const NavBar = () => {
 const navigate = useNavigate()
 const [types, setTypes] = useState([])
 const [generations, setGenerations] = useState([])
 const [versions, setVersions] = useState([])
+const [habitats, setHabitats] = useState([])
 
 const fetchTypes = async () => {
     try {
@@ -38,10 +40,20 @@ const fetchVersions = async () => {
     }
 }
 
+const fetchHabitats = async () => {
+    try {
+        const response = await HabitatService.fetchHabitats()
+        setHabitats(response.data.results)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 useEffect(() => {
     fetchTypes()
     fetchGenerations()
     fetchVersions()
+    fetchHabitats()
 }, [])
 
 
@@ -68,6 +80,12 @@ useEffect(() => {
                 <NavDropdown title='Versions' id='basic-nav-dropdown'>
                     {versions.map((version, index) => {
                         return <NavDropdown.Item className='item' key={index} onClick={() => {navigate('/version/'+version.name)}}>{version.name}</NavDropdown.Item>
+                    })}
+                </NavDropdown>
+
+                <NavDropdown title='Habitats' id='basic-nav-dropdown'>
+                    {habitats.map((habitat, index) => {
+                        return <NavDropdown.Item className='item' key={index} onClick={() => {navigate('/habitat/'+habitat.name)}}>{habitat.name}</NavDropdown.Item>
                     })}
                 </NavDropdown>
 

@@ -7,6 +7,7 @@ import NavBar from './Components/NavBar'
 import PokemonByType from './Pages/PokemonByType'
 import PokemonByGeneration from './Pages/PokemonByGeneration.jsx'
 import PokemonByVersion from './Pages/PokemonByVersion.jsx'
+import PokemonByHabitat from './Pages/PokemonByHabitat.jsx'
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/type/:type" element={<PokemonByType />} />
           <Route path="/generation/:generation" element={<PokemonByGeneration />} />
           <Route path="/version/:version" element={<PokemonByVersion/>} />
+          <Route path="/habitat/:habitat" element={<PokemonByHabitat/>} />
         </Routes>
       </BrowserRouter>
     </>

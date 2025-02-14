@@ -34,10 +34,17 @@ function fetchPokemonsByGroupVersion(groupversion) {
     return axios.get("https://pokeapi.co/api/v2/version-group/"+ groupversion);
 } 
 
+// Crée une fonction fetchPokemonsByHabitat qui prend un paramètre habitat
+function fetchPokemonsByHabitat(habitat){
+    // Appelle axios.get avec l'URL de l'API pour récupérer les pokemons par habitat
+    return axios.get("https://pokeapi.co/api/v2/pokemon-habitat/"+habitat);
+}
+
 
 
 
 export default {
     fetchPokemons, fetchPokemonByName, fetchPokemonSpeciesByName,
-    fetchPokemonsByType, fetchPokemonsByGeneration, fetchPokemonsByVersion, fetchPokemonsByGroupVersion
+    fetchPokemonsByType, fetchPokemonsByGeneration, fetchPokemonsByVersion, fetchPokemonsByGroupVersion,
+    fetchPokemonsByHabitat
 }
